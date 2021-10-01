@@ -1,0 +1,165 @@
+Diferenças:
+Container é como se fosse o objeto
+Imagem é como se fosse a classe
+ 
+Containers:
+
+Docker container run nomedaimagem 
+ex : docker container run hello-world
+para criar um container com uma imagem
+
+O docker client tem o comando docker run
+apartir dai ele chama o docker daemon dizendo que quer que um container seja criado.
+O docker daemon verifica se existe essa imagem localmente,caso não tenha ele pega a imagem no registry que ele vai por padrão no docker hub,
+baixou localmente e executou o container.
+
+Docker container ls 
+para listar os containers ativos
+
+docker container ls -a 
+ para listar todos os containers ativos ou não
+
+docker container run –name meucontainer imagem
+--name para por nome no container
+
+docker container rm idcontainer ou nome
+para remover o container
+
+docker container run –name meucontainer –rm imagem
+ele executa o container e o remove depois de executa-lo
+
+docker container run -it ubuntu bin/bash
+ira criar um container com uma imagem do ubuntu no modo interativo utilizando o bash 
+
+apt-get update
+para atualizar os pacotes
+
+apt-get install curl
+instalar o curl
+
+exit
+para sair do container
+
+nginx servidor web
+
+docker container run nginx 
+
+control c para sair
+
+docker container run -d nginx
+
+para executar o nginx em modo detached
+
+port bind cria um vinculo local entre a porta local da maquina e a porta do container 
+
+docker container run -d -p 8080\;80 nginx
+criara uma imagem no modo detached fazendo um bind de portas entre a porta local 8080 com a porta do container 80
+
+docker container rm -f id ou nome do container
+serve para fazer uma remoção forçada de um container em execução
+
+docker container run -d -p 27017:27017 -e
+MONGO_INITDB_ROOT_USERNAME=mongouser
+-e MONGO_INITDB_ROOT_PASSWORD=mongopwd mongo
+para rodar o mongodb é necessario alem de dizer a porta dizer as variaveis de ambiente no caso username e password para isso usa-se o -e 
+
+comandos para inspecionar o container:
+
+docker container inspect id 
+inspecionar um container 
+
+docker container exec 
+executa um comando em um container
+
+docker container exec -it id bin/bash
+habilita o bash{terminal} do container para execução de comandos
+
+docker stop id
+para a execução de um container 
+
+docker container start id
+para startar um container
+
+docker container logs id
+mostra os logs dos processos do container
+
+docker container logs -n 5 id
+mostra as ultimas 5 linhas do log
+
+docker container logs -f id
+para verificar continuamente o log
+
+
+docker container logs -t id
+para verificar data e hora dos logs
+
+Imagens:
+
+imagem é um template para se criar um container
+
+estrutura: 
+
+a imagem é criada a partir da combinação de varios elementos de cada camada de file system somente de leitura,
+o container e uma inserção de uma camada de leitura e escrita encima da imagem.
+
+para criar uma imagem pode ser feito com dockerfile ou docker commit
+
+dockerfile
+
+
+FROM qual imagem será usada como base para criar uma nova imagem
+
+RUN executa uma instrução
+
+LABEL adiciona metadados a imagem
+
+CMD define o comando e ou parametros padrao
+
+EXPOSE define que container precisa expor a porta em questao
+
+ARG define um argumento para ser usado no processo de construcao
+
+ENV define variaveis de ambiente 
+
+ADD copia arquivos  ou diretorios ou arquivos remotos e adiciona ao sistema de arquivos da imagem
+
+COPY copia arquivos ou diretorios ao sistema de arquivos da imagem
+
+ENTRYPOINT ajuda voce a configurar um container que pode ser executado como um executavel
+
+VOLUME  define volumes que devem ser definidos
+
+WORKDIR define o seu diretorio corrente
+
+
+docker image build -t ubuntu-curl-file .
+comando para criação da imagem
+-t nome da imagem
+. indica o contexto que sera usado que sera o proprio diretorio atual
+
+docker image ls 
+para listar as Imagens
+
+docker image prune para tirar as imagens que nao tem mais referencia imagens que nao estao mais sendo utilizadas
+
+docker image rm id 
+para remover imagens
+
+docker image inspect id
+inspeciona todos os dados da imagem
+
+docker image history id
+historico de criação da imagem
+
+criando uma imagem passando um argumento
+
+ARG TAG=latest 
+FROM ubuntu:$TAG
+RUN apt-get update&& \
+    apt-get install curl -yes
+
+docker build -t brunoalves/ubuntu-arg:v1 --build-arg TAG="18.04" .
+
+
+
+
